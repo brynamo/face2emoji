@@ -1,5 +1,4 @@
-# face2emoji
-Facial Recognition in person
+Facial Recognition in person (Face2:smile:)
 --------------
 The main goal of this project is to translate human emotions into a digital format. There are two different ways we are currently thinking about doing this.
 
