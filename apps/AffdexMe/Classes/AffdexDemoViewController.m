@@ -622,6 +622,7 @@
     }
     
     
+    
     [[NSUserDefaults standardUserDefaults] setObject:self.selectedClassifiers forKey:@"selectedClassifiers"];
     
 }
