@@ -24,7 +24,14 @@
 #endif
 #import <CoreMotion/CoreMotion.h>
 #import "EmotionPickerViewController.h"
-
+    //counters to cause delays for haptic feedback
+int counterOne = 0;
+int counterTwo = 0;
+int counterThree = 0;
+int counterFour = 0;
+int counterFive = 0;
+int counterSix = 0;
+int counterSeven = 0;
 @interface AffdexDemoViewController ()
 
 @property (strong) NSDate *dateOfLastFrame;
@@ -74,6 +81,8 @@
 }
 #endif
 
+
+
 - (void)processedImageReady:(AFDXDetector *)detector image:(UIImage *)image faces:(NSDictionary *)faces atTime:(NSTimeInterval)time;
 {
     NSDate *now = [NSDate date];
@@ -108,7 +117,7 @@
         
         [self.facePointsToDraw addObjectsFromArray:face.facePoints];
         [self.faceRectsToDraw addObject:[NSValue valueWithCGRect:face.faceBounds]];
-
+        
         for (ExpressionViewController *v in viewControllers)
         {
             for (NSDictionary *d in self.availableClassifiers)
@@ -117,41 +126,103 @@
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier1Score = [[face valueForKey:scoreName] floatValue];
-                        //NSLog(@"This is the value for calssifier1Score: %f", classifier1Score);
+                        //For handeling first emotion (anger by default)
+                    if (classifier1Score > 30){
+                        NSLog(@"this is the first counter: %d", counterOne);
+                        counterOne = (counterOne+1);
+                        NSLog(@"this is the second counter: %d", counterOne);
+                        if (counterOne > 50) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterOne = 0;
+                        }
+                    }
+                        //end of haptic feedback
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier2Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier2Score = [[face valueForKey:scoreName] floatValue];
+                    if (classifier2Score > 50){
+                        NSLog(@"this is the first counter: %d", counterTwo);
+                        counterTwo = (counterTwo+1);
+                        NSLog(@"this is the second counter: %d", counterTwo);
+                        if (counterTwo > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterTwo = 0;
+                        }
+                    }
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier3Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier3Score = [[face valueForKey:scoreName] floatValue];
+                    if (classifier3Score > 50){
+                        NSLog(@"this is the first counter: %d", counterThree);
+                        counterThree = (counterThree+1);
+                        NSLog(@"this is the second counter: %d", counterThree);
+                        if (counterThree > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterThree = 0;
+                        }
+                    }
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier4Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier4Score = [[face valueForKey:scoreName] floatValue];
+                    if (classifier4Score > 50){
+                        NSLog(@"this is the first counter: %d", counterFour);
+                        counterFour = (counterFour+1);
+                        NSLog(@"this is the second counter: %d", counterFour);
+                        if (counterFour > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterFour = 0;
+                        }
+                    }
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier5Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier5Score = [[face valueForKey:scoreName] floatValue];
-                        //Bryan Code
+                        //Fifth emotion haptic feedback (happy by default)
                     if (classifier5Score > 50){
-                        NSLog(@" is out of control!: Value= %f", classifier5Score);
+                        NSLog(@"this is the first counter: %d", counterFive);
+                        counterFive = (counterFive+1);
+                        NSLog(@"this is the second counter: %d", counterFive);
+                        if (counterFive > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterFive = 0;
+                        }
                     }
+                        //end of haptic feedback
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier6Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier6Score = [[face valueForKey:scoreName] floatValue];
+                    if (classifier6Score > 50){
+                        NSLog(@"this is the first counter: %d", counterSix);
+                        counterSix = (counterSix+1);
+                        NSLog(@"this is the second counter: %d", counterSix);
+                        if (counterSix > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterSix = 0;
+                        }
+                    }
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier7Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
                     classifier7Score = [[face valueForKey:scoreName] floatValue];
+                    if (classifier7Score > 50){
+                        NSLog(@"this is the first counter: %d", counterSeven);
+                        counterSeven = (counterSeven+1);
+                        NSLog(@"this is the second counter: %d", counterSeven);
+                        if (counterSeven > 20) {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+                            counterSeven = 0;
+                        }
+                    }
                 }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier8Name])
                 {
@@ -238,13 +309,17 @@
                                               usingRectangleColor:[UIColor whiteColor]
                                                           onImage:image];
             UIImage *flippedImage = [UIImage imageWithCGImage:pointsImage.CGImage scale:pointsImage.scale orientation:UIImageOrientationUpMirrored];
+                //Comment above and uncomment below to switch to back camera
+                //UIImage *flippedImage = [UIImage imageWithCGImage:pointsImage.CGImage scale:pointsImage.scale orientation:UIImageOrientationUpMirrored];
             [self.imageView setImage:flippedImage];
         });
     }
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage *flippedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUpMirrored];
+                  UIImage *flippedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUpMirrored];
+                //Comment above and uncomment below to switch to back camera
+                // UIImage *flippedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUpMirrored];
             [self.imageView setImage:flippedImage];
             [weakSelf.imageView setImage:flippedImage];
         });
@@ -563,6 +638,7 @@
     }
     
     // create the expression view controllers to hold the expressions for this face
+        //this section controls what is displayed. the 'initWithName:self.classifier1Name' controls the name, if you want to test it out just replace self.classifier1name with something. Also Swift is unicode, Objective-c is not so we need to use unicode such as \U0001F600 for a smiley face
 
     self.viewControllers = [NSMutableArray new];
     if (self.classifier1Name != nil)
@@ -717,6 +793,8 @@
     self.detector = [[AFDXDetector alloc] initWithDelegate:self usingFile:self.mediaFilename maximumFaces:1];
 #else
     // create our detector with our desired facial expresions, using the front facing camera
+        //self.detector = [[AFDXDetector alloc] initWithDelegate:self usingCamera:AFDX_CAMERA_BACK maximumFaces:1];
+        //Uncomment above and comment below to switch to back camera
     self.detector = [[AFDXDetector alloc] initWithDelegate:self usingCamera:AFDX_CAMERA_FRONT maximumFaces:1];
 #endif
     
