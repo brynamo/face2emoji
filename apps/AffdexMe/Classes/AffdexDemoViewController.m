@@ -104,6 +104,19 @@ int counterSeven = 0;
     self.facePointsToDraw = [NSMutableArray new];
     self.faceRectsToDraw = [NSMutableArray new];
     
+    UILabel *emojiLabel;
+    
+    // Set font and calculate used space
+    UIFont *textFont = [UIFont fontWithName:@"Courier New" size:48];
+    CGSize textStringSize = [@"😐" sizeWithFont:textFont constrainedToSize:CGSizeMake(300,50) lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    // Position of the text
+    emojiLabel = [[UILabel alloc] initWithFrame:CGRectMake(
+                                                           (CGRectGetWidth(self.view.bounds) / 2)-(textStringSize.width/2),
+                                                           (CGRectGetHeight(self.view.bounds) / 4.5)-(textStringSize.height/2),
+                                                           textStringSize.width,
+                                                           textStringSize.height)];
+    
     // Handle each metric in the array
     for (NSNumber *key in [faces allKeys])
     {
@@ -118,10 +131,45 @@ int counterSeven = 0;
         [self.facePointsToDraw addObjectsFromArray:face.facePoints];
         [self.faceRectsToDraw addObject:[NSValue valueWithCGRect:face.faceBounds]];
         
+        // Set text attributes
+        emojiLabel.font = textFont;
+        emojiLabel.text = @"😐";
+        
+        // Display text
+        [self.view addSubview:emojiLabel];
+        
         for (ExpressionViewController *v in viewControllers)
         {
             for (NSDictionary *d in self.availableClassifiers)
             {
+                if ([[d objectForKey:@"name"] isEqualToString:@"Joy"])
+                {
+                    if ([[face valueForKey:@"joyScore"] floatValue] > 50)
+                    {
+                        emojiLabel.text = @"😀";
+                    }
+                }
+                if ([[d objectForKey:@"name"] isEqualToString:@"Sadness"])
+                {
+                    if ([[face valueForKey:@"sadnessScore"] floatValue] > 50)
+                    {
+                        emojiLabel.text = @"😞";
+                    }
+                }
+                if ([[d objectForKey:@"name"] isEqualToString:@"Anger"])
+                {
+                    if ([[face valueForKey:@"angerScore"] floatValue] > 20)
+                    {
+                        emojiLabel.text = @"😠";
+                    }
+                }
+                if ([[d objectForKey:@"name"] isEqualToString:@"Surprise"])
+                {
+                    if ([[face valueForKey:@"surpriseScore"] floatValue] > 20)
+                    {
+                        emojiLabel.text = @"😮";
+                    }
+                }
                 if ([[d objectForKey:@"name"] isEqualToString:self.classifier1Name])
                 {
                     NSString *scoreName = [d objectForKey:@"score"];
